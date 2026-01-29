@@ -1,0 +1,12 @@
+.vscode
+.idea
+*__pycache__
+*.ply
+*.csv
+*.png
+/checkpoints/*.pth
+/log
+/results
+*.pth
+*.pt
+*.npz

@@ -1,0 +1,15 @@
+plyfile
+torch
+numpy
+scipy
+pytorch3d
+geomloss
+mpl_toolkits
+plotly
+matplotlib
+torch_scatter
+tqdm
+open3d
+pandas
+gsplat
+scikit-image
