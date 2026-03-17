@@ -10,11 +10,11 @@
 <a href="https://arxiv.org/abs/2509.22917"><img src='https://img.shields.io/badge/Paper-arXiv-red' alt='Paper arXiv'></a>
 <a href="https://cilix-ai.github.io/gs-embedding-page/"><img src='https://img.shields.io/badge/Project-Page-green' alt='Project Page'></a>
 
-<strong>
-A well-designed vectorized representation is crucial for the learning systems natively based on 3D Gaussian Splatting. While 3DGS enables efficient and explicit 3D reconstruction, its parameter-based representation remains hard to learn as features, especially for neural-network-based models. Directly feeding raw Gaussian parameters into learning frameworks fails to address the non-unique and heterogeneous nature of the Gaussian parameterization, yielding highly data-dependent models. This challenge motivates us to explore a more principled approach to represent 3D Gaussian Splatting in neural networks that preserves the underlying color and geometric structure while enforcing unique mapping and channel homogeneity. In this paper, we propose an embedding representation of 3DGS based on continuous submanifold fields that encapsulate the intrinsic information of Gaussian primitives, thereby benefiting the learning of 3DGS. 
-</strong>
+<div>
+This repository provides a practical embedding pipeline for 3D Gaussian Splatting, making it easier to convert Gaussian primitives into compact learned features and decode them back for rendering or downstream use. It includes pre-trained checkpoints, training code, data loading utilities, and conversion tools so you can plug 3DGS embeddings into your own reconstruction, generation, compression, or editing workflows without working directly with raw Gaussian parameters. Compared with raw Gaussian parameters, the learned embedding is easier for neural networks to model because it captures the same visual structure in a more consistent and less fragile form. In practice, that means smoother training, faster convergence, better generalization, and a more convenient representation for downstream tasks.
+</div>
 
-<div style="width: 100%; text-align: center; margin:auto; margin-top: 1em;">
+<div style="width: 100%; text-align: center; margin:auto; margin-top: 1.5em;">
     <img style="width:100%" src="https://cilix-ai.github.io/gs-embedding-page/images/teaser.png">
 </div>
 
@@ -33,8 +33,24 @@ pip install -r requirements.txt
 ### What you need to know to use this codebase
 In this codebase, all 3DGS is processed using the `Gaussian` class implemented in `dataset/gaussiangen.py`. You have to use this class to represent 3DGS data in order to run the rest of the codebase directly.
 
+### Conversion Pipeline
+```mermaid
+flowchart LR
+    A[3D Gaussian Splatting<br/>PLY or Gaussian objects]
+    B[Sample each Gaussian as<br/>a small colored point set]
+    C[SF-VAE Encoder]
+    D[Compact embedding<br/>NPZ tokens]
+    E[SF-VAE Decoder]
+    F[Reconstructed colored<br/>point set]
+    G[Fit Gaussian parameters<br/>scale, rotation, SH, opacity]
+    H[3D Gaussian Splatting<br/>for rendering or downstream use]
+
+    A --> B --> C --> D
+    D --> E --> F --> G --> H
+```
+
 ### Converting between Embeddings and 3D Gaussian Splatting
-You can find some demo code for converting embeddings to 3D Gaussian Splatting format and save it to ply file in the `converter.py` file. You can implement this in your own code that takes in embeddings predicted by another model, and covert them to Gaussian representations. You can import the `Converter` class from `converter.py` to use it for converting embeddings to Gaussians. You will need to load the pre-trained embedding model checkpoint to initialize the `Converter` class. We have provided two 0th order checkpoints (compiled):
+You can find some demo code for converting embeddings to 3D Gaussian Splatting format and save it to ply file in the `converter.py` file. You can implement this in your own code that takes in embeddings predicted by another model, and covert them to Gaussian representations. You can import the `Converter` class from `converter.py` to use it for converting embeddings to Gaussians. You will need to load the pre-trained embedding model checkpoint to initialize the `Converter` class. We have provided two 0th order checkpoints (torch compiled):
 * `checkpoint_sfvae_sh0.pth`: baseline checkpoint
 * `checkpoint_sfvae_sh0_144.pth`: for 4x faster inference with very slightly lower reconstruction quality
 
