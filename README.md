@@ -69,25 +69,27 @@ We implemented several dataset classes in `dataset/ply_data.py` for loading 3DGS
 In addition, you can also find a 3DGS rendering function called `visualize_gaussian` in the `utils/visualization.py` file, implemented with `gsplat`, which can be used to render a given list of Gaussians. You may also use your own rasterization pipeline such as the original `diff-gaussian-rasterization` codebase.
 
 ## Training
-Train your own embedding model to reproduce our results:
+Training defaults are stored in `config/train.yaml`. You can launch training directly from that config:
+```bash
+python train_embedding.py --config config/train.yaml
+```
+
+You can still override any config value from the command line. For example:
 ```bash
 python train_embedding.py \
-    --model sfvae \
-    --dataset gaussiangen \
-    --num_points 144 \
+    --config config/train.yaml \
     --num_samples 500000 \
-    --epoch 1000 \
-    --bs 1000 \
-    --embedding_dim 32 \
     --norm_weight 0.001 \
     --grid_dim 12 \
-    --cuda 0 \
     --weight_path <CHECKPOINT_PATH>
 ```
 
 Optional: resume from a checkpoint.
 ```bash
-python train_embedding.py --resume True --weight_path <CHECKPOINT_PATH>
+python train_embedding.py \
+    --config config/train.yaml \
+    --resume True \
+    --weight_path <CHECKPOINT_PATH>
 ```
 
 ## Citation

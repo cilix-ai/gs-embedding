@@ -1,6 +1,7 @@
 plyfile
 torch
 numpy
+pyyaml
 geomloss
 matplotlib
 tqdm

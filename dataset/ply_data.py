@@ -297,10 +297,3 @@ class PlyObjectEmbedding(PlyBase):
 
     def __getitem__(self, idx):
         return self.gaussian_objs[idx]
-
-
-if __name__ == "__main__":
-    path = "C:\\Users\\Jackie\\Downloads\\02876657"
-    dataset = Ply(path)
-    print(len(dataset))
-    print(dataset[0].shape)

@@ -1,0 +1,20 @@
+model: sfvae          # choose from "sfvae" or "mlp"
+dataset: gaussiangen  # choose from "gaussiangen" or "ply"
+dataset_path: null    # path to the PLY dataset root when using --dataset ply
+
+num_points: 144       # number of points to sample from each Gaussian
+num_samples: 500000   # number of samples to generate for the GaussianGen dataset
+epoch: 1000
+bs: 1000
+embedding_dim: 32     # embedding dimension for the model
+norm_weight: 0.001    # KL divergence weight for the model
+grid_dim: 12          # decoder grid dimension for the model
+
+cuda: 0
+seed: null
+save_model: true
+log: true
+weight_path: checkpoints/checkpoint.pth
+log_path: log/training_log.csv
+validation: false
+resume: false
