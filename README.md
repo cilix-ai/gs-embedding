@@ -43,8 +43,6 @@ flowchart TB
         A --> B
     end
 
-    B --> C
-
     subgraph row2[" "]
         direction LR
         C[SF-VAE Encoder]
@@ -61,11 +59,19 @@ flowchart TB
         F --> G --> H
     end
 
-    E --> F
+    row1 --> row2
+    row2 --> row3
 
     style row1 fill:none,stroke:none
     style row2 fill:none,stroke:none
     style row3 fill:none,stroke:none
+    classDef input fill:#eef4ff,stroke:#7aa2f7,stroke-width:1.5px,color:#1f2937,rx:10px,ry:10px
+    classDef latent fill:#f5efff,stroke:#a78bfa,stroke-width:1.5px,color:#1f2937,rx:10px,ry:10px
+    classDef output fill:#eefbf3,stroke:#34d399,stroke-width:1.5px,color:#1f2937,rx:10px,ry:10px
+    class A,B input
+    class C,D,E latent
+    class F,G,H output
+    linkStyle default stroke:#94a3b8,stroke-width:1.5px
 ```
 
 ### Converting between Embeddings and 3D Gaussian Splatting
