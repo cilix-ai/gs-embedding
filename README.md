@@ -35,18 +35,37 @@ In this codebase, all 3DGS is processed using the `Gaussian` class implemented i
 
 ### Conversion Pipeline
 ```mermaid
-flowchart LR
-    A[3D Gaussian Splatting<br/>PLY or Gaussian objects]
-    B[Sample each Gaussian as<br/>a small colored point set]
-    C[SF-VAE Encoder]
-    D[Compact embedding<br/>NPZ tokens]
-    E[SF-VAE Decoder]
-    F[Reconstructed colored<br/>point set]
-    G[Fit Gaussian parameters<br/>scale, rotation, SH, opacity]
-    H[3D Gaussian Splatting<br/>for rendering or downstream use]
+flowchart TB
+    subgraph row1[" "]
+        direction LR
+        A[3D Gaussian Splatting<br/>PLY or Gaussian objects]
+        B[Sample each Gaussian as<br/>a small colored point set]
+        A --> B
+    end
 
-    A --> B --> C --> D
-    D --> E --> F --> G --> H
+    B --> C
+
+    subgraph row2[" "]
+        direction LR
+        C[SF-VAE Encoder]
+        D[Compact embedding<br/>NPZ tokens]
+        E[SF-VAE Decoder]
+        C --> D --> E
+    end
+
+    subgraph row3[" "]
+        direction LR
+        F[Reconstructed colored<br/>point set]
+        G[Fit Gaussian parameters<br/>scale, rotation, SH, opacity]
+        H[3D Gaussian Splatting<br/>for rendering or downstream use]
+        F --> G --> H
+    end
+
+    E --> F
+
+    style row1 fill:none,stroke:none
+    style row2 fill:none,stroke:none
+    style row3 fill:none,stroke:none
 ```
 
 ### Converting between Embeddings and 3D Gaussian Splatting
