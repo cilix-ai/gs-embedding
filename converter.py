@@ -98,12 +98,16 @@ def emb2gaussian_batched(converter, src_path, dist_pth, device=0):
                 output_est.extend(est_gaussians)
                 bar.update(end_idx - i)
             bar.close()
-    
+
         output_gs = []
-        for l in output_est:
+        for i, l in enumerate(output_est):
+            # replace the mean with g_centroids
+            l[:3] = g_centroids[i]
             output_gs.append(Gaussian.list2gaussian(l))
-        
-        dataset._save_ply(dist_pth, output_gs)
+
+        path = f"{dist_pth}/{i}.ply"
+        print(f"Saving data to {path}")
+        dataset._save_ply(path, output_gs)
 
 
 if __name__ == '__main__':
@@ -116,7 +120,7 @@ if __name__ == '__main__':
     parser.add_argument("--cuda", type=int, default=0)
     args = parser.parse_args()
 
-    converter = Converter("checkpoints_exp/checkpoint_sfvae_sh0_144.pth", 
+    converter = Converter("checkpoints/checkpoint_sfvae_sh0_144.pth", 
                           embedding_dim=32, grid_dim=12, device=args.cuda)
 
     if args.gaussian2emb:
